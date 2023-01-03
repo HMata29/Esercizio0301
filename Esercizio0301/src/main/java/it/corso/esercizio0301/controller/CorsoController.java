@@ -5,9 +5,7 @@ import it.corso.esercizio0301.repository.CorsoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,5 +25,11 @@ public class CorsoController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(listaCorso, HttpStatus.OK);
+    }
+
+    @PostMapping("/insert")
+    public ResponseEntity <Corso> inserisci(@RequestBody  Corso c){
+         Corso cNuovo = corsoRepository.save(c);
+        return new ResponseEntity<>(cNuovo, HttpStatus.CREATED);
     }
 }
