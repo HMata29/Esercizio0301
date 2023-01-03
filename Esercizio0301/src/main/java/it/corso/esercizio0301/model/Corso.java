@@ -3,6 +3,9 @@ package it.corso.esercizio0301.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "Corso")
 @NoArgsConstructor
@@ -14,12 +17,19 @@ public class Corso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
+    @Column(name = "corso_id")
     private Integer id;
 
     @Setter
     @Getter
     @Column(name = "nome")
     private String nome;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "corsi_utenti",
+    joinColumns = @JoinColumn(name = "corso_id"),
+    inverseJoinColumns = @JoinColumn(name = "utente_id"))
+    private Set<Utente> utenti = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;

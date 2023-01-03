@@ -19,7 +19,7 @@ public class CorsoController {
     CorsoRepository corsoRepository;
 
     @GetMapping("/getAll")
-    public ResponseEntity <List <Corso>> getCorso(){
+    public ResponseEntity <List <Corso>> getCorsi(){
         List<Corso> listaCorso = new ArrayList<>();
         corsoRepository.findAll().forEach(listaCorso::add);
 
@@ -27,6 +27,12 @@ public class CorsoController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(listaCorso, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity <Corso> getCorso(@PathVariable("id") Integer id){
+        Corso cNuovo = corsoRepository.getById(id);
+        return new ResponseEntity<>(cNuovo, HttpStatus.FOUND);
     }
 
     @PostMapping("/insert")
