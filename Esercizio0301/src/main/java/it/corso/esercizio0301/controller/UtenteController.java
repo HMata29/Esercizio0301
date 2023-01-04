@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -65,7 +66,16 @@ public class UtenteController {
         Utente _utente = utenteRepository.save(u);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
 
+
+    }
+    @GetMapping("/getAll")
+    public ResponseEntity<List<Utente>> getAll(){
+        List <Utente> lista =  utenteRepository.findAll();
+        if(lista.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
 
 }

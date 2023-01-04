@@ -21,16 +21,6 @@ public class CorsoController {
     @Autowired
     UtenteRepository utenteRepository;
 
-    @GetMapping("/getAll")
-    public ResponseEntity <List <Corso>> getCorsi(){
-        List<Corso> listaCorso = new ArrayList<>();
-        corsoRepository.findAll().forEach(listaCorso::add);
-
-        if(listaCorso.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(listaCorso, HttpStatus.OK);
-    }
 
     @GetMapping("/get/{id}")
     public ResponseEntity <Corso> getCorso(@PathVariable("id") Integer id){
@@ -66,6 +56,15 @@ public class CorsoController {
         Corso _corso = corsoRepository.save(c);
         return new ResponseEntity<>(HttpStatus.CREATED);
 
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List <Corso>> findAll(){
+        List <Corso> lista = corsoRepository.findAll();
+        if(lista.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(lista , HttpStatus.OK);
     }
 
 }
