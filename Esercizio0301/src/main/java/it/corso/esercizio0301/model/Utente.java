@@ -39,6 +39,13 @@ public class Utente {
             inverseJoinColumns = @JoinColumn(name = "corso_id"))
     private Set<Corso> corsi = new LinkedHashSet<>();
 
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "utente_ruolo",
+            joinColumns = @JoinColumn(name = "utente_id"),
+    inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
+    private Set <Ruolo> ruoli = new LinkedHashSet<>();
+
     public Integer getId() {
         return id;
     }
