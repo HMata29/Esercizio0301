@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/corso")
+@RequestMapping("/api")
 public class CorsoController {
     @Autowired
     CorsoRepository corsoRepository;
@@ -22,32 +22,32 @@ public class CorsoController {
     UtenteRepository utenteRepository;
 
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/corso/get/{id}")
     public ResponseEntity <Corso> getCorso(@PathVariable("id") Integer id){
         Corso cNuovo = corsoRepository.getById(id);
         return new ResponseEntity<>(cNuovo, HttpStatus.FOUND);
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/corso/insert")
     public ResponseEntity <Corso> inserisci(@RequestBody  Corso c){
          Corso cNuovo = corsoRepository.save(c);
         return new ResponseEntity<>(cNuovo, HttpStatus.CREATED);
     }
 
-    @PutMapping ("/update/{id}")
+    @PutMapping ("/corso/update/{id}")
     public ResponseEntity <Corso> update(@PathVariable("id") Integer id, @RequestBody Corso corsoRequest){
         Corso c1 = corsoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TagId " + id + "not found"));
         c1.setNome(corsoRequest.getNome());
         return new ResponseEntity<>(corsoRepository.save(c1), HttpStatus.OK);
     }
 
-    @DeleteMapping ("/delete/{id}")
+    @DeleteMapping ("/corso/delete/{id}")
     public ResponseEntity <HttpStatus> delete (@PathVariable("id") Integer i){
         corsoRepository.deleteById(i);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/utente/{id}/corso")
+    @PostMapping("/corso/utente/{id}/corso")
     public ResponseEntity <Corso> creaCorsoUtente(@PathVariable("id") Integer id,@RequestBody  Corso c){
         Utente utente = utenteRepository.getReferenceById(id);
         Set<Utente> utenteSet = new HashSet<>();
@@ -58,7 +58,7 @@ public class CorsoController {
 
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/corso/getAll")
     public ResponseEntity<List <Corso>> findAll(){
         List <Corso> lista = corsoRepository.findAll();
         if(lista.isEmpty()){

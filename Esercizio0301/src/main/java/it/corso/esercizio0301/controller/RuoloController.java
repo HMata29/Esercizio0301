@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/ruolo")
+@RequestMapping("/api")
 public class RuoloController {
 
     @Autowired
@@ -24,13 +24,13 @@ public class RuoloController {
     @Autowired
     UtenteRepository utenteRepository;
 
-    @GetMapping("/getAll")
+    @GetMapping("/ruolo/getAll")
     public ResponseEntity <List<Ruolo>> getAll (){
         List <Ruolo> lista = ruoloRepository.findAll();
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
-    @PostMapping("/utente/insert/{id_utente}/")
+    @PostMapping("/ruolo/utente/insert/{id_utente}/")
     public ResponseEntity <Ruolo> insert(@PathVariable("id_utente") Integer id , @RequestBody Ruolo ruoloRequest){
         Utente u = utenteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Utente " + id + "not found"));
         Set<Utente> utenteSet = new HashSet<>();
@@ -40,13 +40,13 @@ public class RuoloController {
         return  new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/ruolo/delete/{id}")
     public ResponseEntity <HttpStatus> delete(@PathVariable("id") Integer id){
         ruoloRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/modifica/{id}")
+    @PutMapping("/ruolo/modifica/{id}")
     public ResponseEntity <Ruolo> update (@PathVariable("id") Integer id , @RequestBody Ruolo ruoloRequest){
         Ruolo ruoloTrovato = ruoloRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ruolo " + id + "not found"));
         ruoloTrovato.setPosizione(ruoloRequest.getPosizione());

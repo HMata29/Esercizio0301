@@ -1,13 +1,19 @@
 package it.corso.esercizio0301.controller;
 
 import it.corso.esercizio0301.model.Corso;
+import it.corso.esercizio0301.model.Posizione;
+import it.corso.esercizio0301.model.Ruolo;
 import it.corso.esercizio0301.model.Utente;
+import it.corso.esercizio0301.payload.request.SignupRequest;
+import it.corso.esercizio0301.payload.response.MessageResponse;
 import it.corso.esercizio0301.repository.CorsoRepository;
+import it.corso.esercizio0301.repository.RuoloRepository;
 import it.corso.esercizio0301.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -16,20 +22,26 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/utente")
+@RequestMapping("/api")
 public class UtenteController {
     @Autowired
     UtenteRepository utenteRepository;
     @Autowired
     CorsoRepository corsoRepository;
 
-    @PostMapping("/insert")
+    @Autowired
+    RuoloRepository ruoloRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
+    @PostMapping("/utente/insert")
     public ResponseEntity<Utente> inserisci(@RequestBody Utente u){
         Utente uInserito = utenteRepository.save(u);
         return new ResponseEntity<>(uInserito, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/utente/update/{id}")
     public ResponseEntity <Utente> modifica(@PathVariable("id") Integer id, @RequestBody Utente utenteRequest){
         Utente utenteTrovato = utenteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TagId " + id + "not found"));
         utenteTrovato.setUsername(utenteRequest.getUsername());
@@ -39,12 +51,12 @@ public class UtenteController {
         return new ResponseEntity<>(utenteRepository.save(utenteTrovato), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/utente/delete/{id}")
     public ResponseEntity <HttpStatus> elimina (@PathVariable("id")Integer id){
         utenteRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @PostMapping("/corso/{id}/utente")
+    @PostMapping("/utente/corso/{id}/utente")
     public ResponseEntity <Corso> creaUtenteCorso(@PathVariable("id") Integer id,@RequestBody  Utente u){
         Corso corso = corsoRepository.getReferenceById(id);
         Set<Corso> corsoSet = new HashSet<>();
@@ -55,7 +67,7 @@ public class UtenteController {
 
     }
 
-    @PostMapping("/corso/{id_corso}/{id_utente}")
+    @PostMapping("/utente/corso/{id_corso}/{id_utente}")
     public ResponseEntity <HttpStatus> associaCorsoUtente(@PathVariable("id_corso") Integer idCorso, @PathVariable("id_utente")Integer idUtente){
         Corso c = corsoRepository.findById(idCorso).orElseThrow(() -> new ResourceNotFoundException("CorsoId " + idCorso + "not found"));
         Utente u = utenteRepository.findById(idUtente).orElseThrow(() -> new ResourceNotFoundException("UtenteId " + idUtente + "not found"));
@@ -69,13 +81,63 @@ public class UtenteController {
 
 
     }
-    @GetMapping("/getAll")
+    @GetMapping("/utente/getAll")
     public ResponseEntity<List<Utente>> getAll(){
         List <Utente> lista =  utenteRepository.findAll();
         if(lista.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
+
+    @PostMapping("/utente/insert/admin")
+    public ResponseEntity<?> insertAdmin(@RequestBody SignupRequest signupRequest){
+        Utente newUtente = new Utente(signupRequest.getUsername(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()));
+
+        Set <String> strRuolo = signupRequest.getRole();
+        Set <Ruolo> ruoli= new HashSet<>();
+
+        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(ruoloAdmin);
+
+        newUtente.setRuoli(ruoli);
+        utenteRepository.save(newUtente);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+    @PostMapping("/utente/insert/moderatore")
+    public ResponseEntity<?> insertModerator(@RequestBody SignupRequest signupRequest){
+        Utente newUtente = new Utente(signupRequest.getUsername(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()));
+
+        Set <String> strRuolo = signupRequest.getRole();
+        Set <Ruolo> ruoli= new HashSet<>();
+
+        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.MODERATORE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(ruoloAdmin);
+
+        newUtente.setRuoli(ruoli);
+        utenteRepository.save(newUtente);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/utente/insert/utente")
+    public ResponseEntity<?> insertUtente(@RequestBody SignupRequest signupRequest){
+        Utente newUtente = new Utente(signupRequest.getUsername(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()));
+
+        Set <String> strRuolo = signupRequest.getRole();
+        Set <Ruolo> ruoli= new HashSet<>();
+
+        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.UTENTE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(ruoloAdmin);
+
+        newUtente.setRuoli(ruoli);
+        utenteRepository.save(newUtente);
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
 

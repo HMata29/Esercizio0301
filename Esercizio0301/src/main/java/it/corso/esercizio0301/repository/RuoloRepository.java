@@ -1,8 +1,11 @@
 package it.corso.esercizio0301.repository;
 
+import it.corso.esercizio0301.model.Posizione;
 import it.corso.esercizio0301.model.Ruolo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RuoloRepository extends JpaRepository<Ruolo, Integer> {
+import java.util.Optional;
 
+public interface RuoloRepository extends JpaRepository<Ruolo, Integer> {
+    Optional<Ruolo> findByPosizione(Posizione name);
 }

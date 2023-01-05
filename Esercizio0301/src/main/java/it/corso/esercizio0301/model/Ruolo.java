@@ -55,4 +55,8 @@ public class Ruolo {
     public void setUtenti(Set<Utente> utenti) {
         this.utenti = utenti;
     }
+
+    public Ruolo(Posizione posizione) {
+        this.posizione = posizione;
+    }
 }
