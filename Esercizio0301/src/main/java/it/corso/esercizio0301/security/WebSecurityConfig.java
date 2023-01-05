@@ -61,9 +61,10 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/corso").permitAll()
-        .requestMatchers("/api/corso/**").hasRole("UTENTE")
-            .requestMatchers("api/utente/**").permitAll()
+            .requestMatchers("/api/corso").hasRole("ADMIN")
+        .requestMatchers("/api/corso/**").hasRole("ADMIN")
+            .requestMatchers("api/utente/**").hasRole("ADMIN")
+            .requestMatchers("api/utente/**").hasRole("MODERATOR")
         .anyRequest().authenticated();
     
     httpSecurity.authenticationProvider(authenticationProvider());

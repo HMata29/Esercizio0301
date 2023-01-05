@@ -1,5 +1,6 @@
 package it.corso.esercizio0301.controller;
 
+import it.corso.esercizio0301.business.service.UtenteService;
 import it.corso.esercizio0301.model.Corso;
 import it.corso.esercizio0301.model.Posizione;
 import it.corso.esercizio0301.model.Ruolo;
@@ -35,15 +36,18 @@ public class UtenteController {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    UtenteService utenteService;
+
     @PostMapping("/utente/insert")
     public ResponseEntity<Utente> inserisci(@RequestBody Utente u){
-        Utente uInserito = utenteRepository.save(u);
+        Utente uInserito = utenteService.insertUtente(u);
         return new ResponseEntity<>(uInserito, HttpStatus.CREATED);
     }
 
     @PutMapping("/utente/update/{id}")
     public ResponseEntity <Utente> modifica(@PathVariable("id") Integer id, @RequestBody Utente utenteRequest){
-        Utente utenteTrovato = utenteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("TagId " + id + "not found"));
+        Utente utenteTrovato = utenteService.updateUtenteById(id);
         utenteTrovato.setUsername(utenteRequest.getUsername());
         utenteTrovato.setEmail(utenteRequest.getEmail());
         utenteTrovato.setPassword(utenteRequest.getPassword());
@@ -53,7 +57,7 @@ public class UtenteController {
 
     @DeleteMapping("/utente/delete/{id}")
     public ResponseEntity <HttpStatus> elimina (@PathVariable("id")Integer id){
-        utenteRepository.deleteById(id);
+        utenteService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @PostMapping("/utente/corso/{id}/utente")
@@ -83,11 +87,13 @@ public class UtenteController {
     }
     @GetMapping("/utente/getAll")
     public ResponseEntity<List<Utente>> getAll(){
-        List <Utente> lista =  utenteRepository.findAll();
-        if(lista.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        List <Utente> lista = utenteService.getAll();
         return new ResponseEntity<>(lista, HttpStatus.OK);
+    }
+
+    @GetMapping("/utente/get/{id}")
+    public ResponseEntity<Utente>getUtente(@RequestParam("id") Integer id){
+        return new ResponseEntity<>(utenteService.getById(id), HttpStatus.OK);
     }
 
     @PostMapping("/utente/insert/admin")
