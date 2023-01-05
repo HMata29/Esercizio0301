@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,6 +32,9 @@ public class Corso {
     inverseJoinColumns = @JoinColumn(name = "utente_id"))
     private Set<Utente> utenti = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "corso",cascade = {CascadeType.ALL})
+    private List<Esame> esami;
+
     public Integer getId() {
         return id;
     }
@@ -45,5 +49,13 @@ public class Corso {
 
     public void setName(String name) {
         this.nome = name;
+    }
+
+    public List<Esame> getEsami() {
+        return esami;
+    }
+
+    public void setEsami(List<Esame> esami) {
+        this.esami = esami;
     }
 }
