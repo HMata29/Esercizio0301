@@ -1,5 +1,7 @@
 package it.corso.esercizio0301.controller;
 
+import it.corso.esercizio0301.business.service.RuoloService;
+import it.corso.esercizio0301.business.service.UtenteService;
 import it.corso.esercizio0301.model.Ruolo;
 import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.repository.RuoloRepository;
@@ -24,15 +26,19 @@ public class RuoloController {
     @Autowired
     UtenteRepository utenteRepository;
 
+    @Autowired
+    RuoloService ruoloService;
+    @Autowired
+    UtenteService utenteService;
+
     @GetMapping("/ruolo/getAll")
     public ResponseEntity <List<Ruolo>> getAll (){
-        List <Ruolo> lista = ruoloRepository.findAll();
-        return new ResponseEntity<>(lista, HttpStatus.OK);
+        return new ResponseEntity<>(ruoloService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("/ruolo/utente/insert/{id_utente}/")
     public ResponseEntity <Ruolo> insert(@PathVariable("id_utente") Integer id , @RequestBody Ruolo ruoloRequest){
-        Utente u = utenteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Utente " + id + "not found"));
+        Utente u = utenteService.getById(id);
         Set<Utente> utenteSet = new HashSet<>();
         utenteSet.add(u);
         ruoloRequest.setUtenti(utenteSet);
@@ -42,13 +48,13 @@ public class RuoloController {
 
     @DeleteMapping("/ruolo/delete/{id}")
     public ResponseEntity <HttpStatus> delete(@PathVariable("id") Integer id){
-        ruoloRepository.deleteById(id);
+        ruoloService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/ruolo/modifica/{id}")
     public ResponseEntity <Ruolo> update (@PathVariable("id") Integer id , @RequestBody Ruolo ruoloRequest){
-        Ruolo ruoloTrovato = ruoloRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("ruolo " + id + "not found"));
+        Ruolo ruoloTrovato = ruoloService.findById(id);
         ruoloTrovato.setPosizione(ruoloRequest.getPosizione());
         return new ResponseEntity<>(ruoloRepository.save(ruoloTrovato), HttpStatus.OK);
     }
