@@ -96,7 +96,6 @@ public class UtenteController {
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
 
-        Set <String> strRuolo = signupRequest.getRole();
         Set <Ruolo> ruoli= new HashSet<>();
 
         Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -112,7 +111,7 @@ public class UtenteController {
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
 
-        Set <String> strRuolo = signupRequest.getRole();
+
         Set <Ruolo> ruoli= new HashSet<>();
 
         Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.MODERATORE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -128,8 +127,6 @@ public class UtenteController {
         Utente newUtente = new Utente(signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
-
-        Set <String> strRuolo = signupRequest.getRole();
         Set <Ruolo> ruoli= new HashSet<>();
 
         Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.UTENTE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
