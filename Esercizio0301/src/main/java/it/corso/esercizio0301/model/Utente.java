@@ -82,4 +82,12 @@ public class Utente {
         this.email = email;
         this.password = password;
     }
+
+    public Set<Corso> getCorso(){
+        return corsi;
+    }
+
+    public void setCorsi(Set<Corso> corsi){
+        this.corsi = corsi;
+    }
 }

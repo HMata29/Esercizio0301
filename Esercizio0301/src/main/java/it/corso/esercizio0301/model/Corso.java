@@ -51,6 +51,14 @@ public class Corso {
         this.nome = name;
     }
 
+    public Set <Utente> getUtenti (){
+        return utenti;
+    }
+
+    public void setUtenti(Set<Utente> utenti){
+        this.utenti = utenti;
+    }
+
     public List<Esame> getEsami() {
         return esami;
     }
