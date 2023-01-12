@@ -13,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ruolo")
-public class Ruolo {
+public class Role {
     @Id
     @Getter
     @Setter
@@ -56,7 +56,7 @@ public class Ruolo {
         this.utenti = utenti;
     }
 
-    public Ruolo(Posizione posizione) {
+    public Role(Posizione posizione) {
         this.posizione = posizione;
     }
 }

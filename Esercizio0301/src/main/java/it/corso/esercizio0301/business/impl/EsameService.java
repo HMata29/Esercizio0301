@@ -1,5 +1,6 @@
-package it.corso.esercizio0301.business.service;
+package it.corso.esercizio0301.business.impl;
 
+import it.corso.esercizio0301.business.interfaces.EsameServiceInterface;
 import it.corso.esercizio0301.model.Esame;
 import it.corso.esercizio0301.repository.EsameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EsameService {
+public class EsameService implements EsameServiceInterface {
     @Autowired
     EsameRepository esameRepository;
 

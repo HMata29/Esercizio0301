@@ -1,7 +1,7 @@
 package it.corso.esercizio0301.model;
 
 public enum Posizione {
-    UTENTE,
-    MODERATORE,
-    ADMIN
+    ROLE_UTENTE,
+    ROLE_MODERATORE,
+    ROLE_ADMIN
 }

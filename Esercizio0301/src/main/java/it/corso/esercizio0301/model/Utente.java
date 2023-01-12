@@ -3,7 +3,6 @@ package it.corso.esercizio0301.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
@@ -44,7 +43,7 @@ public class Utente {
     @JoinTable(name = "utente_ruolo",
             joinColumns = @JoinColumn(name = "utente_id"),
     inverseJoinColumns = @JoinColumn(name = "ruolo_id"))
-    private Set <Ruolo> ruoli = new LinkedHashSet<>();
+    private Set <Role> ruoli = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;

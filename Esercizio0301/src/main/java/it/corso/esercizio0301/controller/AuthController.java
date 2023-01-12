@@ -1,7 +1,7 @@
 package it.corso.esercizio0301.controller;
 
 import it.corso.esercizio0301.model.Posizione;
-import it.corso.esercizio0301.model.Ruolo;
+import it.corso.esercizio0301.model.Role;
 import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.payload.request.LoginRequest;
 import it.corso.esercizio0301.payload.request.SignupRequest;
@@ -86,29 +86,29 @@ public class AuthController {
                          encoder.encode(signUpRequest.getPassword()));
 
     Set<String> strRoles = signUpRequest.getRole();
-    Set<Ruolo> roles = new HashSet<>();
+    Set<Role> roles = new HashSet<>();
 
     if (strRoles == null) {
-      Ruolo userRole = roleRepository.findByPosizione(Posizione.UTENTE)
+      Role userRole = roleRepository.findByPosizione(Posizione.ROLE_UTENTE)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
         case "admin":
-          Ruolo adminRole = roleRepository.findByPosizione(Posizione.ADMIN)
+          Role adminRole = roleRepository.findByPosizione(Posizione.ROLE_ADMIN)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(adminRole);
 
           break;
         case "mod":
-          Ruolo modRole = roleRepository.findByPosizione(Posizione.MODERATORE)
+          Role modRole = roleRepository.findByPosizione(Posizione.ROLE_MODERATORE)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(modRole);
 
           break;
         default:
-          Ruolo userRole = roleRepository.findByPosizione(Posizione.UTENTE)
+          Role userRole = roleRepository.findByPosizione(Posizione.ROLE_UTENTE)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(userRole);
         }

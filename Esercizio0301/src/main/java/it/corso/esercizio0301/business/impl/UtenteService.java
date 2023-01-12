@@ -1,5 +1,6 @@
-package it.corso.esercizio0301.business.service;
+package it.corso.esercizio0301.business.impl;
 
+import it.corso.esercizio0301.business.interfaces.UtenteServiceInterface;
 import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.repository.CorsoRepository;
 import it.corso.esercizio0301.repository.RuoloRepository;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UtenteService {
+public class UtenteService implements UtenteServiceInterface {
     @Autowired
     UtenteRepository utenteRepository;
 

@@ -1,9 +1,9 @@
 package it.corso.esercizio0301.controller;
 
-import it.corso.esercizio0301.business.service.UtenteService;
+import it.corso.esercizio0301.business.impl.UtenteService;
 import it.corso.esercizio0301.model.Corso;
 import it.corso.esercizio0301.model.Posizione;
-import it.corso.esercizio0301.model.Ruolo;
+import it.corso.esercizio0301.model.Role;
 import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.payload.request.SignupRequest;
 import it.corso.esercizio0301.payload.response.MessageResponse;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -102,10 +101,10 @@ public class UtenteController {
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
 
-        Set <Ruolo> ruoli= new HashSet<>();
+        Set <Role> ruoli= new HashSet<>();
 
-        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        ruoli.add(ruoloAdmin);
+        Role roleAdmin = ruoloRepository.findByPosizione(Posizione.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(roleAdmin);
 
         newUtente.setRuoli(ruoli);
         utenteRepository.save(newUtente);
@@ -118,10 +117,10 @@ public class UtenteController {
                 encoder.encode(signupRequest.getPassword()));
 
 
-        Set <Ruolo> ruoli= new HashSet<>();
+        Set <Role> ruoli= new HashSet<>();
 
-        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.MODERATORE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        ruoli.add(ruoloAdmin);
+        Role roleAdmin = ruoloRepository.findByPosizione(Posizione.ROLE_MODERATORE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(roleAdmin);
 
         newUtente.setRuoli(ruoli);
         utenteRepository.save(newUtente);
@@ -133,10 +132,10 @@ public class UtenteController {
         Utente newUtente = new Utente(signupRequest.getUsername(),
                 signupRequest.getEmail(),
                 encoder.encode(signupRequest.getPassword()));
-        Set <Ruolo> ruoli= new HashSet<>();
+        Set <Role> ruoli= new HashSet<>();
 
-        Ruolo ruoloAdmin = ruoloRepository.findByPosizione(Posizione.UTENTE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        ruoli.add(ruoloAdmin);
+        Role roleAdmin = ruoloRepository.findByPosizione(Posizione.ROLE_UTENTE).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        ruoli.add(roleAdmin);
 
         newUtente.setRuoli(ruoli);
         utenteRepository.save(newUtente);

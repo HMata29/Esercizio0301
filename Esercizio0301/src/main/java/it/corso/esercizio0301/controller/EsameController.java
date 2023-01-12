@@ -1,8 +1,8 @@
 package it.corso.esercizio0301.controller;
 
-import it.corso.esercizio0301.business.service.EsameService;
+import it.corso.esercizio0301.business.impl.EsameService;
+import it.corso.esercizio0301.model.Corso;
 import it.corso.esercizio0301.model.Esame;
-import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.repository.CorsoRepository;
 import it.corso.esercizio0301.repository.EsameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api")
@@ -58,6 +60,16 @@ public class EsameController {
     @GetMapping("/esame/getByValutazione/{valutazopme}")
     public ResponseEntity<List <Esame>> findByValutazione(@RequestParam("valutazione") Integer valutazione){
         return new ResponseEntity<>(esameService.findByValutazione(valutazione), HttpStatus.FOUND);
+    }
+
+    @PostMapping("/esame/corso/{id}/aggiungi")
+    public ResponseEntity<Esame> creaEsameDaCorso(@PathVariable("id") Integer id, @RequestBody Esame e){
+    Corso corso = corsoRepository.getReferenceById(id);
+    Set<Corso> corsoSet = new HashSet<>();
+    corsoSet.add(corso);
+    e.setCorso((Corso) corsoSet);
+    Esame _esame = esameRepository.save(e);
+    return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

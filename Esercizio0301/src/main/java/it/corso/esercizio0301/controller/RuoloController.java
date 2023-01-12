@@ -1,13 +1,12 @@
 package it.corso.esercizio0301.controller;
 
-import it.corso.esercizio0301.business.service.RuoloService;
-import it.corso.esercizio0301.business.service.UtenteService;
-import it.corso.esercizio0301.model.Ruolo;
+import it.corso.esercizio0301.business.impl.RuoloService;
+import it.corso.esercizio0301.business.impl.UtenteService;
+import it.corso.esercizio0301.model.Role;
 import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.repository.RuoloRepository;
 import it.corso.esercizio0301.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,17 +31,17 @@ public class RuoloController {
     UtenteService utenteService;
 
     @GetMapping("/ruolo/getAll")
-    public ResponseEntity <List<Ruolo>> getAll (){
+    public ResponseEntity <List<Role>> getAll (){
         return new ResponseEntity<>(ruoloService.getAll(), HttpStatus.OK);
     }
 
     @PostMapping("/ruolo/utente/insert/{id_utente}/")
-    public ResponseEntity <Ruolo> insert(@PathVariable("id_utente") Integer id , @RequestBody Ruolo ruoloRequest){
+    public ResponseEntity <Role> insert(@PathVariable("id_utente") Integer id , @RequestBody Role roleRequest){
         Utente u = utenteService.getById(id);
         Set<Utente> utenteSet = new HashSet<>();
         utenteSet.add(u);
-        ruoloRequest.setUtenti(utenteSet);
-        Ruolo _ruolo = ruoloRepository.save(ruoloRequest);
+        roleRequest.setUtenti(utenteSet);
+        Role _role = ruoloRepository.save(roleRequest);
         return  new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -53,9 +52,9 @@ public class RuoloController {
     }
 
     @PutMapping("/ruolo/modifica/{id}")
-    public ResponseEntity <Ruolo> update (@PathVariable("id") Integer id , @RequestBody Ruolo ruoloRequest){
-        Ruolo ruoloTrovato = ruoloService.findById(id);
-        ruoloTrovato.setPosizione(ruoloRequest.getPosizione());
-        return new ResponseEntity<>(ruoloRepository.save(ruoloTrovato), HttpStatus.OK);
+    public ResponseEntity <Role> update (@PathVariable("id") Integer id , @RequestBody Role roleRequest){
+        Role roleTrovato = ruoloService.findById(id);
+        roleTrovato.setPosizione(roleRequest.getPosizione());
+        return new ResponseEntity<>(ruoloRepository.save(roleTrovato), HttpStatus.OK);
     }
 }
