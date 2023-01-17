@@ -10,7 +10,9 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @RestController
@@ -61,6 +63,19 @@ public class CorsoController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(lista , HttpStatus.OK);
+    }
+
+    @PostMapping ("/upload/{id}")
+    public   ResponseEntity<Map<String,String>> uploadFile(@PathVariable("id") Integer id, @RequestParam("file")MultipartFile data){
+        try{
+            corsoService.uploadFile(id, data);
+            return  new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (IOException e) {
+            Map<String,String> map = new HashMap<>();
+            String message = "Non posso caricare il file: " + data.getOriginalFilename();
+            map.put("Error",message);
+            return new ResponseEntity<>(map, HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
 }

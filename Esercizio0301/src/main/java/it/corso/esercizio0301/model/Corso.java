@@ -26,6 +26,16 @@ public class Corso {
     @Column(name = "nome")
     private String nome;
 
+    @Getter
+    @Setter
+    @Lob @Basic(fetch = FetchType.LAZY)
+    @Column(length=100000)
+    private byte[] data;
+
+    @Getter
+    @Setter
+    private String tipo;
+
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name = "corsi_utenti",
     joinColumns = @JoinColumn(name = "corso_id"),

@@ -8,7 +8,9 @@ import it.corso.esercizio0301.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +45,14 @@ public class CorsoService implements CorsoServiceInterface {
     public List<Corso> getAll(){
     List <Corso> lista = corsoRepository.findAll();
     return lista;
+    }
+
+    @Override
+    public void uploadFile(Integer id, MultipartFile data) throws IOException{
+        Corso _corso = corsoRepository.getReferenceById(id);
+        _corso.setData(data.getBytes());
+        _corso.setTipo(data.getContentType());
+        corsoRepository.save(_corso);
     }
 
     public void creaCorsoConUtente(Integer id, Corso c){
