@@ -78,4 +78,14 @@ public class CorsoController {
         }
     }
 
+    @PutMapping("/deleteFile/corso/{id}")
+    public ResponseEntity <HttpStatus> setFileNull(@PathVariable("id") Integer id){
+            if(!(corsoService.getById(id).getData()== null)){
+                corsoService.deleteFile(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            else return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
+    }
+
 }

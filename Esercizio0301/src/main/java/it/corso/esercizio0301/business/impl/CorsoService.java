@@ -6,6 +6,7 @@ import it.corso.esercizio0301.model.Utente;
 import it.corso.esercizio0301.repository.CorsoRepository;
 import it.corso.esercizio0301.repository.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,6 +54,14 @@ public class CorsoService implements CorsoServiceInterface {
         _corso.setData(data.getBytes());
         _corso.setTipo(data.getContentType());
         corsoRepository.save(_corso);
+    }
+
+    @Override
+    public void deleteFile(Integer id) throws DataAccessException {
+        Corso c = corsoRepository.getReferenceById(id);
+        c.setData(null);
+        c.setTipo(null);
+        corsoRepository.save(c);
     }
 
     public void creaCorsoConUtente(Integer id, Corso c){

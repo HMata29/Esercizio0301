@@ -1,6 +1,7 @@
 package it.corso.esercizio0301.business.interfaces;
 
 import it.corso.esercizio0301.model.Corso;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,6 +22,6 @@ public interface CorsoServiceInterface {
 
     void  uploadFile(Integer id, MultipartFile course) throws IOException;
 
-
+    void deleteFile(Integer id) throws DataAccessException;
 
 }
