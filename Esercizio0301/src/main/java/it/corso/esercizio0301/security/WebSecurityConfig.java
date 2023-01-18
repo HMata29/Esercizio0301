@@ -66,7 +66,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         .requestMatchers("/api/corso/**").hasRole("ADMIN")
             .requestMatchers("api/utente/**").hasRole("ADMIN")
             .requestMatchers("api/utente/**").hasRole("MODERATOR")
-        .anyRequest().authenticated();
+        .anyRequest().permitAll();
     
     httpSecurity.authenticationProvider(authenticationProvider());
 
